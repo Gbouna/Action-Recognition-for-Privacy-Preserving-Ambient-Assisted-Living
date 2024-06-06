@@ -24,7 +24,6 @@ class Feeder(Dataset):
         for index in range(len(self.data_dict)):
             info = self.data_dict[index]
             self.label.append(int(info['label']) - 1)
-            self.label.append(int(info['label']) - 1)
 
         self.debug = debug
         self.data_path = data_path
@@ -40,62 +39,6 @@ class Feeder(Dataset):
         if normalization:
             self.get_mean_map()
 
-    def random_erasing_continuous(self, data, p, s_l, s_h, r_1, r_2, v_l, v_h, min_sequence_length=5, max_sequence_length=10):
-        if np.random.rand() > p:
-            return data
-
-        num_frames, num_keypoints, _ = data.shape
-        area = num_frames * num_keypoints
-        erased_frames_indices = []  # List to store indices of erased frames
-
-        current_frame = 0
-        while current_frame < num_frames:
-            remaining_frames = num_frames - current_frame
-            max_possible_seq_length = min(max_sequence_length, remaining_frames)
-            if remaining_frames < min_sequence_length:
-                break
-
-            sequence_length = np.random.randint(min_sequence_length, max_possible_seq_length + 1)
-
-            for _ in range(100):
-                se = np.random.uniform(s_l, s_h) * area
-                re = np.random.uniform(r_1, r_2)
-                fe = int(np.sqrt(se * re))
-                ke = int(np.sqrt(se / re))
-
-                if fe >= num_frames or ke >= num_keypoints:
-                    continue
-
-                xe = np.random.randint(0, num_keypoints - ke)
-                max_start_frame = min(current_frame + sequence_length - fe, num_frames - fe)
-                if current_frame >= max_start_frame:
-                    continue
-
-                ye = np.random.randint(current_frame, max_start_frame)
-
-                if xe + ke <= num_keypoints and ye + fe <= num_frames:
-                    data[ye:ye+fe, xe:xe+ke, :] = np.random.uniform(v_l, v_h, (fe, ke, 3))
-                    erased_frames_indices.extend(range(ye, ye+fe))
-                    break
-
-            current_frame += sequence_length
-            # if current_frame < num_frames:
-            #     remaining_frames = num_frames - current_frame
-            #     skip_length = remaining_frames if remaining_frames < 3 else np.random.randint(3, remaining_frames)
-            #     current_frame += skip_length
-
-            if current_frame < num_frames:
-                remaining_frames = num_frames - current_frame
-                if remaining_frames <= 3:
-                    skip_length = remaining_frames  # Skip all remaining frames if 3 or fewer
-                else:
-                    skip_length = np.random.randint(3, remaining_frames)  # Otherwise, skip at least 3 frames
-                current_frame += skip_length
-
-
-        # print("Erased Frames Indices:", erased_frames_indices)
-        return data
-
     def load_data(self):
         # data: N C V T M
         self.data = []
@@ -106,8 +49,6 @@ class Feeder(Dataset):
             skeletons = json_file['skeletons']
             value = np.array(skeletons)
             self.data.append(value)
-            erased_skeletons = self.random_erasing_continuous(value, p=0.5, s_l=0.05, s_h=0.2, r_1=0.5, r_2=2, v_l=0, v_h=0)
-            self.data.append(erased_skeletons)
 
 
     def get_mean_map(self):
@@ -117,8 +58,7 @@ class Feeder(Dataset):
         self.std_map = data.transpose((0, 2, 4, 1, 3)).reshape((N * T * M, C * V)).std(axis=0).reshape((C, 1, V, 1))
 
     def __len__(self):
-        # return len(self.data_dict)*self.repeat
-        return (2 * len(self.data_dict))*self.repeat
+        return len(self.data_dict)*self.repeat
 
     def __iter__(self):
         return self
@@ -134,12 +74,8 @@ class Feeder(Dataset):
         return X
 
     def __getitem__(self, index):
-        # label = self.label[index % len(self.data_dict)]
-        # value = self.data[index % len(self.data_dict)]
-
-        total_index = (2 * len(self.data_dict))
-        label = self.label[index % total_index]
-        value = self.data[index % total_index]
+        label = self.label[index % len(self.data_dict)]
+        value = self.data[index % len(self.data_dict)]
 
         if self.train_val == 'train':
             random.random()
