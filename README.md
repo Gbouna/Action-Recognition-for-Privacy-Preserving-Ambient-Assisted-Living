@@ -86,7 +86,8 @@ For cross-subject, run `python main.py --device 0 1 --config ./config/nturgbd-cr
 Run `python main.py --device 0 1 --config ./config/ucla/nw-ucla.yaml --phase test --weights path_to_model_weigh`
 
 # Citation
-```@InProceedings{10.1007/978-3-031-67285-9_15,
+```
+@InProceedings{10.1007/978-3-031-67285-9_15,
 author="Zakka, Vincent Gbouna
 and Dai, Zhuangzhuang
 and Manso, Luis J.",
@@ -101,5 +102,6 @@ publisher="Springer Nature Switzerland",
 address="Cham",
 pages="203--217",
 isbn="978-3-031-67285-9"
-}```
+}
+```
 
