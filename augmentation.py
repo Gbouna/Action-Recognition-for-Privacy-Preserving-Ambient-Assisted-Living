@@ -334,36 +334,84 @@ class Augmentation:
                 current_frame += skip_length
         return data
 
-    def occluding_all_joints_random_consecutive_frames(self, data, p, s_l, s_h, v_l, v_h, min_sequence_length=5, max_sequence_length=10):
+    # def occluding_all_joints_random_consecutive_frames(self, data, p, s_l, s_h, v_l, v_h, min_sequence_length=5, max_sequence_length=10):
+    #     if np.random.rand() > p:
+    #         return data
+    #     num_frames, num_keypoints, _ = data.shape
+    #     area = num_frames * num_keypoints
+    #     erased_frames_indices = []
+    #     current_frame = 0
+    #     while current_frame < num_frames:
+    #         remaining_frames = num_frames - current_frame
+    #         max_possible_seq_length = min(max_sequence_length, remaining_frames)
+    #         if remaining_frames < min_sequence_length:
+    #             break
+    #         sequence_length = np.random.randint(min_sequence_length, max_possible_seq_length + 1)
+    #         for _ in range(100):
+    #             se = np.random.uniform(s_l, s_h) * area
+    #             re = np.random.uniform(1, 1)  
+    #             fe = int(np.sqrt(se * re))
+    #             if fe >= num_frames:
+    #                 continue
+    #             max_start_frame = min(current_frame + sequence_length - fe, num_frames - fe)
+    #             if current_frame >= max_start_frame:
+    #                 continue
+    #             ye = np.random.randint(current_frame, max_start_frame)
+    #             if ye + fe <= num_frames:
+    #                 data[ye:ye+fe, :, :] = np.random.uniform(v_l, v_h, (fe, num_keypoints, 3))
+    #                 erased_frames_indices.extend(range(ye, ye+fe))
+    #                 break
+    #         current_frame += sequence_length
+    #         if current_frame < num_frames:
+    #             remaining_frames = num_frames - current_frame
+    #             skip_length = remaining_frames if remaining_frames <= 3 else np.random.randint(3, remaining_frames)
+    #             current_frame += skip_length
+    #     return data
+    
+    def occluding_all_joints_random_consecutive_frames(self, data, p, s_l, s_h, r_1, r_2, v_l, v_h, min_sequence_length=5, max_sequence_length=10):
         if np.random.rand() > p:
             return data
+
         num_frames, num_keypoints, _ = data.shape
         area = num_frames * num_keypoints
-        erased_frames_indices = []
+        erased_frames_indices = []  # List to store indices of erased frames
+
         current_frame = 0
         while current_frame < num_frames:
             remaining_frames = num_frames - current_frame
             max_possible_seq_length = min(max_sequence_length, remaining_frames)
             if remaining_frames < min_sequence_length:
                 break
+
             sequence_length = np.random.randint(min_sequence_length, max_possible_seq_length + 1)
+
             for _ in range(100):
                 se = np.random.uniform(s_l, s_h) * area
-                re = np.random.uniform(1, 1)  
+                re = np.random.uniform(r_1, r_2)
                 fe = int(np.sqrt(se * re))
-                if fe >= num_frames:
+                ke = int(np.sqrt(se / re))
+
+                if fe >= num_frames or ke >= num_keypoints:
                     continue
+
+                xe = np.random.randint(0, num_keypoints - ke)
                 max_start_frame = min(current_frame + sequence_length - fe, num_frames - fe)
                 if current_frame >= max_start_frame:
                     continue
+
                 ye = np.random.randint(current_frame, max_start_frame)
-                if ye + fe <= num_frames:
-                    data[ye:ye+fe, :, :] = np.random.uniform(v_l, v_h, (fe, num_keypoints, 3))
+
+                if xe + ke <= num_keypoints and ye + fe <= num_frames:
+                    data[ye:ye+fe, xe:xe+ke, :] = np.random.uniform(v_l, v_h, (fe, ke, 3))
                     erased_frames_indices.extend(range(ye, ye+fe))
                     break
+
             current_frame += sequence_length
             if current_frame < num_frames:
                 remaining_frames = num_frames - current_frame
-                skip_length = remaining_frames if remaining_frames <= 3 else np.random.randint(3, remaining_frames)
+                if remaining_frames <= 3:
+                    skip_length = remaining_frames  # Skip all remaining frames if 3 or fewer
+                else:
+                    skip_length = np.random.randint(3, remaining_frames)  # Otherwise, skip at least 3 frames
                 current_frame += skip_length
         return data
