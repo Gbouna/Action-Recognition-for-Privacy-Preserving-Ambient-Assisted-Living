@@ -1,5 +1,5 @@
-# Temporal Decoupling Graph Depthwise Separable Convolution Network (AIiH2024)
-This is the official repository of TD-GDSCN, our work accepted by the International Conference on AI in Healthcare (AIiH)
+# Action Recognition for Privacy-Preserving Ambient Assisted Living (AIiH2024)
+This is the official repository for **Action Recognition for Privacy-Preserving Ambient Assisted Living**, our paper published at the International Conference on AI in Healthcare (AIiH2024)
 
 # Prerequisites
 Python >= 3.6
