@@ -1,6 +1,8 @@
 # Action Recognition for Privacy-Preserving Ambient Assisted Living (AIiH2024)
 This is the official repository for **Action Recognition for Privacy-Preserving Ambient Assisted Living**, our paper published at the International Conference on AI in Healthcare (AIiH2024)
 
+The paper can be found here[https://doi.org/10.1007/978-3-031-67285-9_15]
+
 # Prerequisites
 Python >= 3.6
 
