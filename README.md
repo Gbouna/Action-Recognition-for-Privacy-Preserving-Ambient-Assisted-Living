@@ -11,8 +11,6 @@ PyTorch >= 1.1.0
 PyYAML, tqdm
 
 Run `pip install -e torchlight`
-
-We provide the dependency file of our experimental environment; you can install all dependencies by creating a new anaconda virtual environment and running `pip install -r requirements.txt 
 `
 # Data Preparation
 
