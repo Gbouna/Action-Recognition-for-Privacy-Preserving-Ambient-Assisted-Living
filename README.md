@@ -22,10 +22,8 @@ NTU RGB+D 60 Skeleton
 
 NW-UCLA
 
-## NTU RGB+D 60 and 120
-
-1. **NTU RGB+D 60** Skeleton dataset from https://rose1.ntu.edu.sg/dataset/actionRecognition/
-2. **NW-UCLA** dataset from [Download NW-UCLA datasetaw](https://www.dropbox.com/scl/fi/6numm9wzu1cixw8nyzb91/all_sqe.zip?rlkey=it1ruxtsm4rggxldbbbr4w3yj&e=1&dl=0)
+1. **NTU RGB+D 60**: [Download the Skeleton dataset here](https://rose1.ntu.edu.sg/dataset/actionRecognition/)
+2. **NW-UCLA**: [Download the dataset here](https://www.dropbox.com/scl/fi/6numm9wzu1cixw8nyzb91/all_sqe.zip?rlkey=it1ruxtsm4rggxldbbbr4w3yj&e=1&dl=0)
 
 ## Data Processing
 
