@@ -83,6 +83,11 @@ For cross-subject, run `python main.py --device 0 1 --config ./config/nturgbd-cr
 
 Run `python main.py --device 0 1 --config ./config/ucla/nw-ucla.yaml --phase test --weights path_to_model_weigh`
 
+# Real-time action recognition in a real-world environment 
+
+![Action Recognition](https://www.youtube.com/watch?v=7vdGAu3zcCA&t=9s)
+
+
 # Citation
 ```
 @InProceedings{10.1007/978-3-031-67285-9_15,
