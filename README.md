@@ -85,7 +85,7 @@ Run `python main.py --device 0 1 --config ./config/ucla/nw-ucla.yaml --phase tes
 
 # Real-time action recognition in a real-world environment 
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/7vdGAu3zcCA&t=9s/0.jpg)](https://www.youtube.com/watch?v=7vdGAu3zcCA&t=9s)
+[![Action Recognition in a Structured Environment](https://img.youtube.com/vi/7vdGAu3zcCA/0.jpg)](https://www.youtube.com/watch?v=7vdGAu3zcCA)
 
 
 # Citation
